@@ -15,7 +15,6 @@ import static com.epam.tc.hw9.specs.card.CreateCardSpecs.getRequestGetCardSucces
 import static com.epam.tc.hw9.specs.card.CreateCardSpecs.getResponseCreateCardSuccess;
 import static com.epam.tc.hw9.specs.card.CreateCardSpecs.getResponseGetCardSuccess;
 import static com.epam.tc.hw9.specs.list.CreateListSpecs.getRequestCreateListSuccess;
-import static com.epam.tc.hw9.specs.list.CreateListSpecs.getRequestGetListSuccess;
 import static com.epam.tc.hw9.specs.list.CreateListSpecs.getResponseCreateListSuccess;
 import static io.restassured.RestAssured.given;
 
@@ -31,7 +30,7 @@ public class ListTest extends BaseAPItest {
     String newListPos = "top";
 
     @Test
-    public void createListTest() {
+    public void createCardTest() {
 
         var createListResponse = given()
             .spec(getRequestCreateListSuccess(key, token, newListName, newListPos))
@@ -46,16 +45,15 @@ public class ListTest extends BaseAPItest {
         System.out.println("cardID: " + createdListId);
     }
 
-    @Test
-    public void getListTest() {
-        var getListResponse = given()
-            .spec(getRequestGetListSuccess(key, token))
-            .pathParam("id", createdListId)
-            .when()
-            .get()
-            .then()
-            .log().all();
-            //.spec(getResponseGetCardSuccess(newListName)).extract().body().equals(createdListBody);
-    }
+//    @Test
+//    public void getCardTest() {
+//        var getCardResponse = given()
+//            .spec(getRequestGetCardSuccess(key, token))
+//            .pathParam("id", createdCardId)
+//            .when()
+//            .get()
+//            .then()
+//            .spec(getResponseGetCardSuccess(newCardName)).extract().body().equals(createdCardBody);
+//    }
 }
 
