@@ -53,4 +53,5 @@ buildNumber.properties
 .mvn/wrapper/maven-wrapper.jar
 iuliia_kulagina_api.iml
 .allure/
+allure-results
 /src/test/resources/code_style.xml
