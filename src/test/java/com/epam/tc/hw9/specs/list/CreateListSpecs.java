@@ -43,27 +43,4 @@ public class CreateListSpecs {
             .build();
         return respSpec;
     }
-
-    public static RequestSpecification getRequestGetListSuccess(String key, String token) {
-        reqSpec = new RequestSpecBuilder()
-            .setBaseUri(baseURL)
-            .setBasePath("/1/lists/{id}")
-            .addQueryParam("key", key)
-            .addQueryParam("token", token)
-            .setBody("")
-            .build();
-        return reqSpec;
-    }
-
-    public static ResponseSpecification getResponseGetListSuccess(String cardName, String pos) {
-        respSpec = new ResponseSpecBuilder()
-            .expectStatusCode(200)
-            .expectContentType(ContentType.JSON)
-            .expectHeader("Content-Type", startsWith("application/json;"))
-            .expectHeader("Access-Control-Allow-Headers", equalTo("Authorization, Accept, Content-Type"))
-            .expectBody("name", equalTo(cardName))
-            .expectBody("pos", any(Integer.class))
-            .build();
-        return respSpec;
-    }
 }

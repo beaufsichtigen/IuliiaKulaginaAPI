@@ -2,7 +2,7 @@ package com.epam.tc.hw9;
 
 import static com.epam.tc.hw9.specs.board.CreateBoardSpecs.getRequestCreateBoardSuccess;
 import static com.epam.tc.hw9.specs.board.DeleteBoardSpecs.getRequestDeleteBoardSuccess;
-import static com.epam.tc.hw9.specs.list.GetListSpecs.getFirstListId;
+import static com.epam.tc.hw9.specs.board.GetListsForBoard.getFirstListId;
 import static io.restassured.RestAssured.given;
 
 import com.epam.tc.hw9.entities.Board;

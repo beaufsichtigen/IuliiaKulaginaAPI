@@ -48,11 +48,10 @@ public class BoardTest {
             .spec(getResponseUpdateBoardSuccess(updatedBoardName));
     }
 
+    //    Next test should fail, because body is plain text in current version,
+    //    but should be json: {"code": "<string>", "message": "<string>"}
+
     @Test(priority = 2)
-    /**
-    should fail, because body is plain text in current version, but should be json:
-    {"code": "<string>", "message": "<string>"}
-     **/
     public void getBoardTest() {
         var getResponse = given()
             .spec(getRequestGetBoardSuccess(key, token))

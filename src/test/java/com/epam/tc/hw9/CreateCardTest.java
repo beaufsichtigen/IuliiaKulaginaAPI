@@ -1,9 +1,9 @@
 package com.epam.tc.hw9;
 
 import static com.epam.tc.hw9.specs.card.CreateCardSpecs.getRequestCreateCardSuccess;
-import static com.epam.tc.hw9.specs.card.CreateCardSpecs.getRequestGetCardSuccess;
 import static com.epam.tc.hw9.specs.card.CreateCardSpecs.getResponseCreateCardSuccess;
-import static com.epam.tc.hw9.specs.card.CreateCardSpecs.getResponseGetCardSuccess;
+import static com.epam.tc.hw9.specs.card.GetCardSpecs.getRequestGetCardSuccess;
+import static com.epam.tc.hw9.specs.card.GetCardSpecs.getResponseGetCardSuccess;
 import static io.restassured.RestAssured.given;
 
 import org.testng.annotations.Test;

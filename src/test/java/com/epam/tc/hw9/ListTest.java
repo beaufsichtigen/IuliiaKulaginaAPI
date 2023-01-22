@@ -1,9 +1,9 @@
 package com.epam.tc.hw9;
 
 import static com.epam.tc.hw9.specs.list.CreateListSpecs.getRequestCreateListSuccess;
-import static com.epam.tc.hw9.specs.list.CreateListSpecs.getRequestGetListSuccess;
 import static com.epam.tc.hw9.specs.list.CreateListSpecs.getResponseCreateListSuccess;
-import static com.epam.tc.hw9.specs.list.CreateListSpecs.getResponseGetListSuccess;
+import static com.epam.tc.hw9.specs.list.GetListSpecs.getRequestGetListSuccess;
+import static com.epam.tc.hw9.specs.list.GetListSpecs.getResponseGetListSuccess;
 import static com.epam.tc.hw9.specs.list.GetListsBoard.getRequestGetListsBoardSuccess;
 import static com.epam.tc.hw9.specs.list.GetListsBoard.getResponseGetListsBoardSuccess;
 import static io.restassured.RestAssured.given;

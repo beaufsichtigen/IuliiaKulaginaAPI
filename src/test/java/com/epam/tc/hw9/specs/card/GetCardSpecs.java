@@ -11,25 +11,21 @@ import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 
-public class CreateCardSpecs {
-
+public class GetCardSpecs {
     private static RequestSpecification reqSpec;
     private static ResponseSpecification respSpec;
 
-    public static RequestSpecification getRequestCreateCardSuccess(String key, String token, String cardName) {
+    public static RequestSpecification getRequestGetCardSuccess(String key, String token) {
         reqSpec = new RequestSpecBuilder()
             .setBaseUri(baseURL)
-            .setBasePath("/1/cards")
-            .addQueryParam("name", cardName)
+            .setBasePath("/1/cards/{id}")
             .addQueryParam("key", key)
             .addQueryParam("token", token)
-            .addQueryParam("idList", listId)
-            .setBody("")
             .build();
         return reqSpec;
     }
 
-    public static ResponseSpecification getResponseCreateCardSuccess(String cardName) {
+    public static ResponseSpecification getResponseGetCardSuccess(String cardName) {
         respSpec = new ResponseSpecBuilder()
             .expectStatusCode(200)
             .expectContentType(ContentType.JSON)
@@ -40,6 +36,4 @@ public class CreateCardSpecs {
             .build();
         return respSpec;
     }
-
-
 }
