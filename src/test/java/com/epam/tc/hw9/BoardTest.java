@@ -49,8 +49,10 @@ public class BoardTest {
     }
 
     @Test(priority = 2)
-    //should fail, because body plain text in current version, but should be json:
-    // {"code": "<string>", "message": "<string>"}
+    /**
+    should fail, because body is plain text in current version, but should be json:
+    {"code": "<string>", "message": "<string>"}
+     **/
     public void getBoardTest() {
         var getResponse = given()
             .spec(getRequestGetBoardSuccess(key, token))
@@ -59,7 +61,6 @@ public class BoardTest {
             .put()
             .then()
             .spec(getResponseGetBoardSuccess(updatedBoardName));
-        //.extract().body().as(Board.class);
     }
 
     @Test(priority = 2)
@@ -71,7 +72,6 @@ public class BoardTest {
             .put()
             .then()
             .spec(getResponseGetBoardUnauth());
-        //.extract().body().as(Board.class);
     }
 
     @Test(priority = 3)

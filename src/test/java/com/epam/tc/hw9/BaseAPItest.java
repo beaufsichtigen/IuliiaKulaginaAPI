@@ -18,7 +18,6 @@ public class BaseAPItest {
 
     public static String baseURL = "https://api.trello.com";
     public static String boardId;
-
     public static String listId;
     static final String key = System.getenv("APIkey");
     static final String token = System.getenv("APItoken");
