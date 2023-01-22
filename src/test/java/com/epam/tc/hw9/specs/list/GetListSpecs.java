@@ -1,18 +1,15 @@
 package com.epam.tc.hw9.specs.list;
 
 import static com.epam.tc.hw9.BaseAPItest.baseURL;
-import static com.epam.tc.hw9.specs.board.GetBoardSpecs.getRequestGetBoardSuccess;
 import static io.restassured.RestAssured.given;
 
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.specification.RequestSpecification;
-import io.restassured.specification.ResponseSpecification;
 import java.util.ArrayList;
 
 public class GetListSpecs {
 
     private static RequestSpecification reqSpec;
-    private static ResponseSpecification respSpec;
 
     public static RequestSpecification getRequestListSuccess(String key, String token) {
         reqSpec = new RequestSpecBuilder()
@@ -24,7 +21,7 @@ public class GetListSpecs {
         return reqSpec;
     }
 
-    public static String getFirstListId (String key, String token, String boardId) {
+    public static String getFirstListId(String key, String token, String boardId) {
         ArrayList<String> resp = given()
             .spec(getRequestListSuccess(key, token))
             .pathParam("id", boardId)
@@ -37,5 +34,4 @@ public class GetListSpecs {
         System.out.println("ListId: " + id);
         return id;
     }
-
 }

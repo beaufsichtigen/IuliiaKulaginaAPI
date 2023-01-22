@@ -2,7 +2,6 @@ package com.epam.tc.hw9.specs.board;
 
 import static com.epam.tc.hw9.BaseAPItest.baseURL;
 import static org.hamcrest.core.IsEqual.equalTo;
-import static org.hamcrest.core.IsNull.nullValue;
 import static org.hamcrest.core.StringStartsWith.startsWith;
 
 import io.restassured.builder.RequestSpecBuilder;
@@ -15,8 +14,6 @@ public class UpdateBoardSpecs {
 
     private static RequestSpecification reqSpec;
     private static ResponseSpecification respSpec;
-
-
 
     public static RequestSpecification getRequestUpdateBoardSuccess(String key, String token, String newName) {
         reqSpec = new RequestSpecBuilder()

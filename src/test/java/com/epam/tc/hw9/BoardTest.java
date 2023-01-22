@@ -1,6 +1,5 @@
 package com.epam.tc.hw9;
 
-
 import static com.epam.tc.hw9.specs.board.CreateBoardSpecs.getRequestCreateBoardSuccess;
 import static com.epam.tc.hw9.specs.board.CreateBoardSpecs.getResponseCreateBoardSuccess;
 import static com.epam.tc.hw9.specs.board.DeleteBoardSpecs.getRequestDeleteBoardSuccess;
@@ -35,8 +34,6 @@ public class BoardTest {
 
         boardId = createResponse.id();
         System.out.println(boardId);
-
-        //String boardId = "63c8636033ae560308bdc6ca";
     }
 
     @Test(priority = 1)
@@ -49,13 +46,11 @@ public class BoardTest {
             .put()
             .then()
             .spec(getResponseUpdateBoardSuccess(updatedBoardName));
-        //.extract().body().as(Board.class);
-
-
     }
 
-
     @Test(priority = 2)
+    //should fail, because body plain text in current version, but should be json:
+    // {"code": "<string>", "message": "<string>"}
     public void getBoardTest() {
         var getResponse = given()
             .spec(getRequestGetBoardSuccess(key, token))
@@ -66,9 +61,6 @@ public class BoardTest {
             .spec(getResponseGetBoardSuccess(updatedBoardName));
         //.extract().body().as(Board.class);
     }
-
-    //should fail, because body plain text in current version, but should be json:
-    // {"code": "<string>", "message": "<string>"}
 
     @Test(priority = 2)
     public void getBoardTestErrors() {
@@ -101,31 +93,6 @@ public class BoardTest {
             .delete()
             .then()
             .statusCode(404);
-        //.spec(getResponseDeleteBoardSuccess());
-
     }
-//                    .log().all();
-
-
-
-
-
-
-
-
-
-
-
-            //.log().all();
-
-//        ArrayList<String> s = given().contentType(ContentType.JSON).get()
-//                                     .then().extract().path("id");
-//        for(String subject: s) {
-//            System.out.println(subject);
-//        }
-//
-//            System.out.println(respSpecBoard);
-
-
-    }
+}
 

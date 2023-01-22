@@ -1,6 +1,6 @@
 package com.epam.tc.hw9.entities;
 
-public record Board (
+public record Board(
     String id,
     String name,
     String desc,
@@ -28,5 +28,5 @@ public record Board (
     String templateGallery,
     boolean enterpriseOwned,
     String idEnterprise
-    ) {
+) {
 }

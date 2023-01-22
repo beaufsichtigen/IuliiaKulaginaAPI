@@ -28,17 +28,17 @@ public class BaseAPItest {
     @BeforeClass
     public static void setup() {
         String boardName = "BeforeTestBoard";
-            Board testBoard = given()
-                .spec(getRequestCreateBoardSuccess(key, token, boardName))
-                .when()
-                .post()
-                .then()
-                .statusCode(200)
-                .extract().body().as(Board.class);
+        Board testBoard = given()
+            .spec(getRequestCreateBoardSuccess(key, token, boardName))
+            .when()
+            .post()
+            .then()
+            .statusCode(200)
+            .extract().body().as(Board.class);
 
-            boardId = testBoard.id();
-            System.out.println("BoardId: " + boardId);
-            listId = getFirstListId(key, token, boardId);
+        boardId = testBoard.id();
+        System.out.println("BoardId: " + boardId);
+        listId = getFirstListId(key, token, boardId);
     }
 
     @AfterClass

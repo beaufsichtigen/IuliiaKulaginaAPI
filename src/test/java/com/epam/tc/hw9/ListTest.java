@@ -4,6 +4,8 @@ import static com.epam.tc.hw9.specs.list.CreateListSpecs.getRequestCreateListSuc
 import static com.epam.tc.hw9.specs.list.CreateListSpecs.getRequestGetListSuccess;
 import static com.epam.tc.hw9.specs.list.CreateListSpecs.getResponseCreateListSuccess;
 import static com.epam.tc.hw9.specs.list.CreateListSpecs.getResponseGetListSuccess;
+import static com.epam.tc.hw9.specs.list.GetListsBoard.getRequestGetListsBoardSuccess;
+import static com.epam.tc.hw9.specs.list.GetListsBoard.getResponseGetListsBoardSuccess;
 import static io.restassured.RestAssured.given;
 
 import org.testng.annotations.Test;
@@ -40,7 +42,18 @@ public class ListTest extends BaseAPItest {
             .when()
             .get()
             .then()
-        .spec(getResponseGetListSuccess(newListName, newListPos)).extract().body().equals(createdListBody);
+            .spec(getResponseGetListSuccess(newListName, newListPos)).extract().body().equals(createdListBody);
+    }
+
+    @Test
+    public void getListsBoardTest() {
+        var getListsBoardResponse = given()
+            .spec(getRequestGetListsBoardSuccess(key, token))
+            .pathParam("id", listId)
+            .when()
+            .get()
+            .then()
+            .spec(getResponseGetListsBoardSuccess(boardId));
     }
 }
 

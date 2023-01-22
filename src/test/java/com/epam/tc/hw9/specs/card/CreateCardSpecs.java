@@ -36,11 +36,10 @@ public class CreateCardSpecs {
             .expectHeader("Content-Type", startsWith("application/json;"))
             .expectHeader("Access-Control-Allow-Headers", equalTo("Authorization, Accept, Content-Type"))
             .expectBody("name", equalTo(cardName))
-            .expectBody( "idList", equalTo(listId))
+            .expectBody("idList", equalTo(listId))
             .build();
         return respSpec;
     }
-
 
     public static RequestSpecification getRequestGetCardSuccess(String key, String token) {
         reqSpec = new RequestSpecBuilder()
@@ -59,10 +58,8 @@ public class CreateCardSpecs {
             .expectHeader("Content-Type", startsWith("application/json;"))
             .expectHeader("Access-Control-Allow-Headers", equalTo("Authorization, Accept, Content-Type"))
             .expectBody("name", equalTo(cardName))
-            .expectBody( "idList", equalTo(listId))
+            .expectBody("idList", equalTo(listId))
             .build();
         return respSpec;
     }
-
-
 }
