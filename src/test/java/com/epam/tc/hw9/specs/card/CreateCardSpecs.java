@@ -40,6 +40,4 @@ public class CreateCardSpecs {
             .build();
         return respSpec;
     }
-
-
 }
