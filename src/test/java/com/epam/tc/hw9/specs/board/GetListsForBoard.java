@@ -1,34 +1,32 @@
 package com.epam.tc.hw9.specs.board;
 
 import static com.epam.tc.hw9.BaseAPItest.baseURL;
+import static com.epam.tc.hw9.specs.Auth.getAuthQueryParams;
 import static io.restassured.RestAssured.given;
 
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.specification.RequestSpecification;
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 
 public class GetListsForBoard {
 
-    private static RequestSpecification reqSpec;
-
-    public static RequestSpecification getRequestGetBoardListsSuccess(String key, String token) {
-        reqSpec = new RequestSpecBuilder()
+    public static RequestSpecification getRequestGetBoardListsSuccess() {
+        return new RequestSpecBuilder()
             .setBaseUri(baseURL)
             .setBasePath("/1/boards/{id}/lists")
-            .addQueryParam("key", key)
-            .addQueryParam("token", token)
+            .addQueryParams(getAuthQueryParams())
             .build();
-        return reqSpec;
     }
 
-    public static String getFirstListId(String key, String token, String boardId) {
+    public static String getFirstListId(String boardId) {
         ArrayList<String> resp = given()
-            .spec(getRequestGetBoardListsSuccess(key, token))
+            .spec(getRequestGetBoardListsSuccess())
             .pathParam("id", boardId)
             .when()
             .get()
             .then()
-            .statusCode(200)
+            .statusCode(HttpURLConnection.HTTP_OK)
             .extract().body().path("id");
         String id = resp.get(0);
         System.out.println("ListId: " + id);

@@ -1,40 +1,34 @@
 package com.epam.tc.hw9.specs.board;
 
 import static com.epam.tc.hw9.BaseAPItest.baseURL;
+import static com.epam.tc.hw9.specs.Auth.getAuthQueryParams;
 import static org.hamcrest.core.IsEqual.equalTo;
-import static org.hamcrest.core.StringStartsWith.startsWith;
 
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
+import java.net.HttpURLConnection;
 
 public class CreateBoardSpecs {
-    private static RequestSpecification reqSpec;
-    private static ResponseSpecification respSpec;
 
-    public static RequestSpecification getRequestCreateBoardSuccess(String key, String token, String boardName) {
-        reqSpec = new RequestSpecBuilder()
+    public static RequestSpecification getRequestCreateBoardSuccess(String boardName) {
+        return new RequestSpecBuilder()
             .setBaseUri(baseURL)
             .setBasePath("/1/boards/")
             .addQueryParam("name", boardName)
-            .addQueryParam("key", key)
-            .addQueryParam("token", token)
+            .addQueryParams(getAuthQueryParams())
             .setBody("")
             .build();
-        ;
-        return reqSpec;
     }
 
     public static ResponseSpecification getResponseCreateBoardSuccess(String boardName) {
-        respSpec = new ResponseSpecBuilder()
-            .expectStatusCode(200)
+        return new ResponseSpecBuilder()
+            .expectStatusCode(HttpURLConnection.HTTP_OK)
             .expectContentType(ContentType.JSON)
-            .expectHeader("Content-Type", startsWith("application/json;"))
             .expectHeader("Access-Control-Allow-Headers", equalTo("Authorization, Accept, Content-Type"))
             .expectBody("name", equalTo(boardName))
             .build();
-        return respSpec;
     }
 }

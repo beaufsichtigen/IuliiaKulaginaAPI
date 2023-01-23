@@ -1,31 +1,43 @@
 package com.epam.tc.hw9;
 
+import static com.epam.tc.hw9.BaseAPItest.boardIdParamName;
 import static com.epam.tc.hw9.specs.board.CreateBoardSpecs.getRequestCreateBoardSuccess;
 import static com.epam.tc.hw9.specs.board.CreateBoardSpecs.getResponseCreateBoardSuccess;
 import static com.epam.tc.hw9.specs.board.DeleteBoardSpecs.getRequestDeleteBoardSuccess;
 import static com.epam.tc.hw9.specs.board.DeleteBoardSpecs.getResponseDeleteBoardSuccess;
+import static com.epam.tc.hw9.specs.board.GetBoardSpecs.getRequestGetBoardIncorrectKey;
 import static com.epam.tc.hw9.specs.board.GetBoardSpecs.getRequestGetBoardSuccess;
 import static com.epam.tc.hw9.specs.board.GetBoardSpecs.getResponseGetBoardSuccess;
 import static com.epam.tc.hw9.specs.board.GetBoardSpecs.getResponseGetBoardUnauth;
+import static com.epam.tc.hw9.specs.board.GetListsForBoard.getFirstListId;
 import static com.epam.tc.hw9.specs.board.UpdateBoardSpecs.getRequestUpdateBoardSuccess;
 import static com.epam.tc.hw9.specs.board.UpdateBoardSpecs.getResponseUpdateBoardSuccess;
 import static io.restassured.RestAssured.given;
 
 import com.epam.tc.hw9.entities.Board;
+import com.epam.tc.hw9.specs.Auth;
+import java.net.HttpURLConnection;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-public class BoardTest {
+public class BoardTest extends BaseAPItest {
 
-    private static String key = System.getenv("APIkey");
-    private static String token = System.getenv("APItoken");
-    static String boardId;
     String boardName = "APIboard";
     String updatedBoardName = "Updated Name";
+
+    @BeforeClass
+    public static void setup() {
+        System.out.println("setup empty");
+    }
+
+    @AfterClass
+    public static void teardown() {}
 
     @Test(priority = 0)
     public void createBoardTest() {
         var createResponse = given()
-            .spec(getRequestCreateBoardSuccess(key, token, boardName))
+            .spec(getRequestCreateBoardSuccess(boardName))
             .when()
             .post()
             .then()
@@ -39,9 +51,9 @@ public class BoardTest {
     @Test(priority = 1)
     public void updateBoardTest() {
 
-        var updateResponse = given()
-            .spec(getRequestUpdateBoardSuccess(key, token, updatedBoardName))
-            .pathParam("id", boardId)
+        given()
+            .spec(getRequestUpdateBoardSuccess(updatedBoardName))
+            .pathParam(boardIdParamName, boardId)
             .when()
             .put()
             .then()
@@ -53,45 +65,43 @@ public class BoardTest {
 
     @Test(priority = 2)
     public void getBoardTest() {
-        var getResponse = given()
-            .spec(getRequestGetBoardSuccess(key, token))
-            .pathParam("id", boardId)
+        given()
+            .spec(getRequestGetBoardSuccess())
+            .pathParam(boardIdParamName, boardId)
             .when()
-            .put()
+            .get()
             .then()
             .spec(getResponseGetBoardSuccess(updatedBoardName));
     }
 
     @Test(priority = 2)
     public void getBoardTestErrors() {
-        var getResponse = given()
-            .spec(getRequestGetBoardSuccess("yyyy", token))
-            .pathParam("id", boardId)
+        given()
+            .spec(getRequestGetBoardIncorrectKey())
+            .pathParam(boardIdParamName, boardId)
             .when()
-            .put()
+            .get()
             .then()
             .spec(getResponseGetBoardUnauth());
     }
 
     @Test(priority = 3)
     public void deleteBoardTest() {
-
-        var deleteResponse = given()
-            .spec(getRequestDeleteBoardSuccess(key, token))
-            .pathParam("id", boardId)
+        given()
+            .spec(getRequestDeleteBoardSuccess())
+            .pathParam(boardIdParamName, boardId)
             .when()
             .delete()
             .then()
-            .statusCode(200)
             .spec(getResponseDeleteBoardSuccess());
 
-        var secondDeleteResponse = given()
-            .spec(getRequestDeleteBoardSuccess(key, token))
-            .pathParam("id", boardId)
+        given()
+            .spec(getRequestDeleteBoardSuccess())
+            .pathParam(boardIdParamName, boardId)
             .when()
             .delete()
             .then()
-            .statusCode(404);
+            .statusCode(HttpURLConnection.HTTP_NOT_FOUND);
     }
 }
 

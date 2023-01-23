@@ -12,7 +12,8 @@ import org.testng.annotations.Test;
 
 public class ListTest extends BaseAPItest {
 
-    public static String createdListId;
+    String createdListId;
+
     Object createdListBody;
 
     String newListName = "API list";
@@ -22,13 +23,13 @@ public class ListTest extends BaseAPItest {
     public void createListTest() {
 
         var createListResponse = given()
-            .spec(getRequestCreateListSuccess(key, token, newListName, newListPos))
-            .pathParam("id", boardId)
+            .spec(getRequestCreateListSuccess(newListName, newListPos))
+            .pathParam(boardIdParamName, boardId)
             .when()
             .post()
             .then()
             //.log().all();
-            .spec(getResponseCreateListSuccess(newListName, newListPos));
+            .spec(getResponseCreateListSuccess(newListName));
         createdListId = createListResponse.extract().body().path("id");
         createdListBody = createListResponse.extract().body();
         System.out.println("createdListID: " + createdListId);
@@ -37,19 +38,19 @@ public class ListTest extends BaseAPItest {
     @Test
     public void getListTest() {
         var getListResponse = given()
-            .spec(getRequestGetListSuccess(key, token))
-            .pathParam("id", createdListId)
+            .spec(getRequestGetListSuccess())
+            .pathParam(listPathParamName, createdListId)
             .when()
             .get()
             .then()
-            .spec(getResponseGetListSuccess(newListName, newListPos)).extract().body().equals(createdListBody);
+            .spec(getResponseGetListSuccess(newListName)).extract().body().equals(createdListBody);
     }
 
     @Test
     public void getListsBoardTest() {
-        var getListsBoardResponse = given()
-            .spec(getRequestGetListsBoardSuccess(key, token))
-            .pathParam("id", listId)
+        given()
+            .spec(getRequestGetListsBoardSuccess())
+            .pathParam(listPathParamName, listId)
             .when()
             .get()
             .then()

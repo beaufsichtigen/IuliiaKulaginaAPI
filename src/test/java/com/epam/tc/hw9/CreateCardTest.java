@@ -10,7 +10,7 @@ import org.testng.annotations.Test;
 
 public class CreateCardTest extends BaseAPItest {
 
-    public static String createdCardId;
+    String createdCardId;
     Object createdCardBody;
 
     String newCardName = "API card";
@@ -19,7 +19,7 @@ public class CreateCardTest extends BaseAPItest {
     public void createCardTest() {
 
         var createCardResponse = given()
-            .spec(getRequestCreateCardSuccess(key, token, newCardName))
+            .spec(getRequestCreateCardSuccess(newCardName))
             .when()
             .post()
             .then()
@@ -32,7 +32,7 @@ public class CreateCardTest extends BaseAPItest {
     @Test
     public void getCardTest() {
         var getCardResponse = given()
-            .spec(getRequestGetCardSuccess(key, token))
+            .spec(getRequestGetCardSuccess())
             .pathParam("id", createdCardId)
             .when()
             .get()

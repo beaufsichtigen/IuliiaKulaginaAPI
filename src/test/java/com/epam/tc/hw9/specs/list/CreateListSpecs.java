@@ -1,46 +1,38 @@
 package com.epam.tc.hw9.specs.list;
 
 import static com.epam.tc.hw9.BaseAPItest.baseURL;
-import static com.epam.tc.hw9.BaseAPItest.listId;
+import static com.epam.tc.hw9.specs.Auth.getAuthQueryParams;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.core.IsInstanceOf.any;
-import static org.hamcrest.core.StringStartsWith.startsWith;
 
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
-import java.util.ArrayList;
+import java.net.HttpURLConnection;
 
 public class CreateListSpecs {
 
-    private static RequestSpecification reqSpec;
-    private static ResponseSpecification respSpec;
-
-    public static RequestSpecification getRequestCreateListSuccess(String key, String token, String name, String pos) {
-        reqSpec = new RequestSpecBuilder()
+    public static RequestSpecification getRequestCreateListSuccess(String name, String pos) {
+        return new RequestSpecBuilder()
             .setBaseUri(baseURL)
             .setBasePath("/1/boards/{id}/lists")
-            .addQueryParam("key", key)
-            .addQueryParam("token", token)
+            .addQueryParams(getAuthQueryParams())
             .addQueryParam("name", name)
             .addQueryParam("pos", pos)
             .setBody("")
             .build();
-        return reqSpec;
     }
 
-    public static ResponseSpecification getResponseCreateListSuccess(String cardName, String pos) {
-        respSpec = new ResponseSpecBuilder()
-            .expectStatusCode(200)
+    public static ResponseSpecification getResponseCreateListSuccess(String listName) {
+        return new ResponseSpecBuilder()
+            .expectStatusCode(HttpURLConnection.HTTP_OK)
             .expectContentType(ContentType.JSON)
-            .expectHeader("Content-Type", startsWith("application/json;"))
             .expectHeader("Access-Control-Allow-Headers", equalTo("Authorization, Accept, Content-Type"))
-            .expectBody("name", equalTo(cardName))
+            .expectBody("name", equalTo(listName))
             .expectBody("pos", any(Integer.class))
             .build();
-        return respSpec;
     }
 }

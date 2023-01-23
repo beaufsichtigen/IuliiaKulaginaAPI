@@ -1,5 +1,8 @@
 package com.epam.tc.hw9.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public record Board(
     String id,
     String name,
@@ -11,9 +14,6 @@ public record Board(
     boolean pinned,
     String url,
     String shortUrl,
-    Prefs prefs,
-    LabelNames labelNames,
-    Limits limits,
     boolean starred,
     String memberships,
     String shortLink,

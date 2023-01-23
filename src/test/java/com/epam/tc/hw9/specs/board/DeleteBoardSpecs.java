@@ -1,39 +1,31 @@
 package com.epam.tc.hw9.specs.board;
 
 import static com.epam.tc.hw9.BaseAPItest.baseURL;
+import static com.epam.tc.hw9.specs.Auth.getAuthQueryParams;
 import static org.hamcrest.core.IsNull.nullValue;
-import static org.hamcrest.core.StringStartsWith.startsWith;
 
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
+import java.net.HttpURLConnection;
 
 public class DeleteBoardSpecs {
 
-    private static RequestSpecification reqSpec;
-    private static ResponseSpecification respSpec;
-
-    public static RequestSpecification getRequestDeleteBoardSuccess(String key, String token) {
-        reqSpec = new RequestSpecBuilder()
+    public static RequestSpecification getRequestDeleteBoardSuccess() {
+        return new RequestSpecBuilder()
             .setBaseUri(baseURL)
             .setBasePath("/1/boards/{id}")
-            .addQueryParam("key", key)
-            .addQueryParam("token", token)
+            .addQueryParams(getAuthQueryParams())
             .build();
-        System.out.println(reqSpec);
-        return reqSpec;
     }
 
     public static ResponseSpecification getResponseDeleteBoardSuccess() {
-        respSpec = new ResponseSpecBuilder()
-            .expectStatusCode(200)
+        return new ResponseSpecBuilder()
+            .expectStatusCode(HttpURLConnection.HTTP_OK)
             .expectContentType(ContentType.JSON)
-            .expectHeader("Content-Type", startsWith("application/json;"))
             .expectBody("_value", nullValue())
-            //.expectBody(boardId = "id")
             .build();
-        return respSpec;
     }
 }
