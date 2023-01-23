@@ -5,6 +5,7 @@ import static com.epam.tc.hw9.BaseAPItest.listId;
 import static com.epam.tc.hw9.specs.Auth.getAuthQueryParams;
 import static org.hamcrest.core.IsEqual.equalTo;
 
+import com.epam.tc.hw9.specs.BaseSpec;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.http.ContentType;
@@ -12,7 +13,7 @@ import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 import java.net.HttpURLConnection;
 
-public class GetCardSpecs {
+public class GetCardSpecs extends BaseSpec {
 
     public static RequestSpecification getRequestGetCardSuccess() {
         return new RequestSpecBuilder()

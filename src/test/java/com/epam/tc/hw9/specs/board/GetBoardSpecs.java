@@ -8,6 +8,7 @@ import static com.epam.tc.hw9.specs.Auth.getToken;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.core.IsNull.notNullValue;
 
+import com.epam.tc.hw9.specs.BaseSpec;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.http.ContentType;
@@ -15,7 +16,7 @@ import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 import java.net.HttpURLConnection;
 
-public class GetBoardSpecs {
+public class GetBoardSpecs extends BaseSpec {
 
     private static String path = "/1/boards/{id}";
 
@@ -40,7 +41,7 @@ public class GetBoardSpecs {
         return new ResponseSpecBuilder()
             .expectStatusCode(HttpURLConnection.HTTP_OK)
             .expectContentType(ContentType.JSON)
-            .expectBody("name", equalTo(expectedName))
+            .expectBody(boardNameBodyPath, equalTo(expectedName))
             .build();
     }
 
@@ -50,6 +51,24 @@ public class GetBoardSpecs {
             .expectContentType(ContentType.JSON)
             .expectBody("code", notNullValue())
             .expectBody("message", notNullValue())
+            .build();
+    }
+
+
+    public static RequestSpecification getRequestGetBoardErrorsPlainText(String key, String token) {
+        return new RequestSpecBuilder()
+            .setBaseUri(baseURL)
+            .setBasePath(path)
+            .addQueryParam(getApiKeyName(), key)
+            .addQueryParam(getApiTokenName(), token)
+            .build();
+    }
+
+    public static ResponseSpecification getResponseGetBoardErrorsPlainText(int errorCode, String body) {
+        return new ResponseSpecBuilder()
+            .expectStatusCode(errorCode)
+            .expectContentType(ContentType.TEXT)
+            .expectBody(equalTo(body))
             .build();
     }
 }

@@ -6,12 +6,14 @@ import static com.epam.tc.hw9.specs.card.GetCardSpecs.getRequestGetCardSuccess;
 import static com.epam.tc.hw9.specs.card.GetCardSpecs.getResponseGetCardSuccess;
 import static io.restassured.RestAssured.given;
 
+import com.epam.tc.hw9.entities.Card;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class CreateCardTest extends BaseAPItest {
 
     String createdCardId;
-    Object createdCardBody;
+    Card createdCard;
 
     String newCardName = "API card";
 
@@ -24,8 +26,8 @@ public class CreateCardTest extends BaseAPItest {
             .post()
             .then()
             .spec(getResponseCreateCardSuccess(newCardName));
-        createdCardId = createCardResponse.extract().body().path("id");
-        createdCardBody = createCardResponse.extract().body();
+        createdCard = createCardResponse.extract().body().as(Card.class);
+        createdCardId = createdCard.id();
         System.out.println("cardID: " + createdCardId);
     }
 
@@ -37,6 +39,11 @@ public class CreateCardTest extends BaseAPItest {
             .when()
             .get()
             .then()
-            .spec(getResponseGetCardSuccess(newCardName)).extract().body().equals(createdCardBody);
+            .spec(getResponseGetCardSuccess(newCardName));
+        Card gottenCard = getCardResponse.extract().body().as(Card.class);
+        Assert.assertEquals(createdCard, gottenCard);
+        System.out.println(createdCard.toString());
+        System.out.println(gottenCard.toString());
+
     }
 }

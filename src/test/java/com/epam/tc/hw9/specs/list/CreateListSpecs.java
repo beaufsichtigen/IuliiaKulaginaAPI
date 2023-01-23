@@ -6,6 +6,7 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.core.IsInstanceOf.any;
 
+import com.epam.tc.hw9.specs.BaseSpec;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.http.ContentType;
@@ -13,7 +14,7 @@ import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 import java.net.HttpURLConnection;
 
-public class CreateListSpecs {
+public class CreateListSpecs extends BaseSpec {
 
     public static RequestSpecification getRequestCreateListSuccess(String name, String pos) {
         return new RequestSpecBuilder()

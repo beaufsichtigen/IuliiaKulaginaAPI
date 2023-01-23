@@ -14,8 +14,8 @@ public class BaseAPItest {
 
     public static String baseURL = "https://api.trello.com";
     public static String boardId;
-    public static final String boardIdParamName = "id";
-    public static final String listPathParamName = "id";
+    public static final String boardIdPathParamName = "id";
+    public static final String listIdPathParamName = "id";
     public static String listId;
 
     @BeforeClass
@@ -39,11 +39,10 @@ public class BaseAPItest {
     public static void teardown() {
         var deleteResponse = given()
             .spec(getRequestDeleteBoardSuccess())
-            .pathParam(boardIdParamName, boardId)
+            .pathParam(boardIdPathParamName, boardId)
             .when()
             .delete()
             .then()
             .statusCode(HttpURLConnection.HTTP_OK);
-        System.out.println("teardown оригинальный");
     }
 }

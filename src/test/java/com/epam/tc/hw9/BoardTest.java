@@ -1,21 +1,21 @@
 package com.epam.tc.hw9;
 
-import static com.epam.tc.hw9.BaseAPItest.boardIdParamName;
 import static com.epam.tc.hw9.specs.board.CreateBoardSpecs.getRequestCreateBoardSuccess;
 import static com.epam.tc.hw9.specs.board.CreateBoardSpecs.getResponseCreateBoardSuccess;
 import static com.epam.tc.hw9.specs.board.DeleteBoardSpecs.getRequestDeleteBoardSuccess;
 import static com.epam.tc.hw9.specs.board.DeleteBoardSpecs.getResponseDeleteBoardSuccess;
+import static com.epam.tc.hw9.specs.board.GetBoardSpecs.getRequestGetBoardErrorsPlainText;
 import static com.epam.tc.hw9.specs.board.GetBoardSpecs.getRequestGetBoardIncorrectKey;
 import static com.epam.tc.hw9.specs.board.GetBoardSpecs.getRequestGetBoardSuccess;
+import static com.epam.tc.hw9.specs.board.GetBoardSpecs.getResponseGetBoardErrorsPlainText;
 import static com.epam.tc.hw9.specs.board.GetBoardSpecs.getResponseGetBoardSuccess;
 import static com.epam.tc.hw9.specs.board.GetBoardSpecs.getResponseGetBoardUnauth;
-import static com.epam.tc.hw9.specs.board.GetListsForBoard.getFirstListId;
 import static com.epam.tc.hw9.specs.board.UpdateBoardSpecs.getRequestUpdateBoardSuccess;
 import static com.epam.tc.hw9.specs.board.UpdateBoardSpecs.getResponseUpdateBoardSuccess;
 import static io.restassured.RestAssured.given;
 
+import com.epam.tc.hw9.data.Data;
 import com.epam.tc.hw9.entities.Board;
-import com.epam.tc.hw9.specs.Auth;
 import java.net.HttpURLConnection;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -53,7 +53,7 @@ public class BoardTest extends BaseAPItest {
 
         given()
             .spec(getRequestUpdateBoardSuccess(updatedBoardName))
-            .pathParam(boardIdParamName, boardId)
+            .pathParam(boardIdPathParamName, boardId)
             .when()
             .put()
             .then()
@@ -67,7 +67,7 @@ public class BoardTest extends BaseAPItest {
     public void getBoardTest() {
         given()
             .spec(getRequestGetBoardSuccess())
-            .pathParam(boardIdParamName, boardId)
+            .pathParam(boardIdPathParamName, boardId)
             .when()
             .get()
             .then()
@@ -78,18 +78,29 @@ public class BoardTest extends BaseAPItest {
     public void getBoardTestErrors() {
         given()
             .spec(getRequestGetBoardIncorrectKey())
-            .pathParam(boardIdParamName, boardId)
+            .pathParam(boardIdPathParamName, boardId)
             .when()
             .get()
             .then()
             .spec(getResponseGetBoardUnauth());
     }
 
+    @Test(priority = 2, dataProvider = "boardErrors", dataProviderClass = Data.class)
+    public void getBoardTestErrorsPlainText(String key, String token, String boardId, int errorCode, String body) {
+        given()
+            .spec(getRequestGetBoardErrorsPlainText(key, token))
+            .pathParam(boardIdPathParamName, boardId)
+            .when()
+            .get()
+            .then()
+            .spec(getResponseGetBoardErrorsPlainText(errorCode, body));
+    }
+
     @Test(priority = 3)
     public void deleteBoardTest() {
         given()
             .spec(getRequestDeleteBoardSuccess())
-            .pathParam(boardIdParamName, boardId)
+            .pathParam(boardIdPathParamName, boardId)
             .when()
             .delete()
             .then()
@@ -97,7 +108,7 @@ public class BoardTest extends BaseAPItest {
 
         given()
             .spec(getRequestDeleteBoardSuccess())
-            .pathParam(boardIdParamName, boardId)
+            .pathParam(boardIdPathParamName, boardId)
             .when()
             .delete()
             .then()
