@@ -12,11 +12,10 @@ import org.testng.annotations.BeforeClass;
 
 public class BaseAPItest {
 
-    public static String baseURL = "https://api.trello.com";
     public static String boardId;
-    public static final String boardIdPathParamName = "id";
-    public static final String listIdPathParamName = "id";
+    public static final String boardIdUrlParamName = "id";
     public static String listId;
+    public static final String listIdUrlParamName = "id";
 
     @BeforeClass
     public static void setup() {
@@ -39,7 +38,7 @@ public class BaseAPItest {
     public static void teardown() {
         var deleteResponse = given()
             .spec(getRequestDeleteBoardSuccess())
-            .pathParam(boardIdPathParamName, boardId)
+            .pathParam(boardIdUrlParamName, boardId)
             .when()
             .delete()
             .then()

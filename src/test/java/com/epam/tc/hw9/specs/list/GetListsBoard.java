@@ -1,6 +1,5 @@
 package com.epam.tc.hw9.specs.list;
 
-import static com.epam.tc.hw9.BaseAPItest.baseURL;
 import static com.epam.tc.hw9.specs.Auth.getAuthQueryParams;
 import static org.hamcrest.core.IsEqual.equalTo;
 
@@ -27,7 +26,7 @@ public class GetListsBoard extends BaseSpec {
             .expectStatusCode(HttpURLConnection.HTTP_OK)
             .expectContentType(ContentType.JSON)
             .expectHeader("Access-Control-Allow-Headers", equalTo("Authorization, Accept, Content-Type"))
-            .expectBody("id", equalTo(boardId))
+            .expectBody(boardIdBodyPath, equalTo(boardId))
             .build();
     }
 }

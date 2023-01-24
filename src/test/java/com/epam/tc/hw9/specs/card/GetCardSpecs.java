@@ -1,6 +1,5 @@
 package com.epam.tc.hw9.specs.card;
 
-import static com.epam.tc.hw9.BaseAPItest.baseURL;
 import static com.epam.tc.hw9.BaseAPItest.listId;
 import static com.epam.tc.hw9.specs.Auth.getAuthQueryParams;
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -29,7 +28,7 @@ public class GetCardSpecs extends BaseSpec {
             .expectContentType(ContentType.JSON)
             .expectHeader("Access-Control-Allow-Headers", equalTo("Authorization, Accept, Content-Type"))
             .expectBody("name", equalTo(cardName))
-            .expectBody("idList", equalTo(listId))
+            .expectBody(cardsListBodyPath, equalTo(listId))
             .build();
     }
 }

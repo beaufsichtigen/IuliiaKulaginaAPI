@@ -1,6 +1,5 @@
 package com.epam.tc.hw9.specs.board;
 
-import static com.epam.tc.hw9.BaseAPItest.baseURL;
 import static com.epam.tc.hw9.specs.Auth.getAuthQueryParams;
 import static io.restassured.RestAssured.given;
 

@@ -1,8 +1,6 @@
 package com.epam.tc.hw9.specs.list;
 
-import static com.epam.tc.hw9.BaseAPItest.baseURL;
 import static com.epam.tc.hw9.specs.Auth.getAuthQueryParams;
-import static io.restassured.RestAssured.given;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.core.IsInstanceOf.any;
 
@@ -21,8 +19,8 @@ public class CreateListSpecs extends BaseSpec {
             .setBaseUri(baseURL)
             .setBasePath("/1/boards/{id}/lists")
             .addQueryParams(getAuthQueryParams())
-            .addQueryParam("name", name)
-            .addQueryParam("pos", pos)
+            .addQueryParam(listNameQueryParam, name)
+            .addQueryParam(listPositionQueryParam, pos)
             .setBody("")
             .build();
     }
@@ -32,8 +30,8 @@ public class CreateListSpecs extends BaseSpec {
             .expectStatusCode(HttpURLConnection.HTTP_OK)
             .expectContentType(ContentType.JSON)
             .expectHeader("Access-Control-Allow-Headers", equalTo("Authorization, Accept, Content-Type"))
-            .expectBody("name", equalTo(listName))
-            .expectBody("pos", any(Integer.class))
+            .expectBody(listNameBodyPath, equalTo(listName))
+            .expectBody(listPositionBodyPath, any(Integer.class))
             .build();
     }
 }

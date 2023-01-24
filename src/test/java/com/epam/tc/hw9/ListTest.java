@@ -24,7 +24,7 @@ public class ListTest extends BaseAPItest {
 
         var createListResponse = given()
             .spec(getRequestCreateListSuccess(newListName, newListPos))
-            .pathParam(boardIdPathParamName, boardId)
+            .pathParam(boardIdUrlParamName, boardId)
             .when()
             .post()
             .then()
@@ -39,7 +39,7 @@ public class ListTest extends BaseAPItest {
     public void getListTest() {
         var getListResponse = given()
             .spec(getRequestGetListSuccess())
-            .pathParam(listIdPathParamName, createdListId)
+            .pathParam(listIdUrlParamName, createdListId)
             .when()
             .get()
             .then()
@@ -50,7 +50,7 @@ public class ListTest extends BaseAPItest {
     public void getListsBoardTest() {
         given()
             .spec(getRequestGetListsBoardSuccess())
-            .pathParam(listIdPathParamName, listId)
+            .pathParam(listIdUrlParamName, listId)
             .when()
             .get()
             .then()

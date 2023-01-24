@@ -1,6 +1,5 @@
 package com.epam.tc.hw9.specs.card;
 
-import static com.epam.tc.hw9.BaseAPItest.baseURL;
 import static com.epam.tc.hw9.BaseAPItest.listId;
 import static com.epam.tc.hw9.specs.Auth.getAuthQueryParams;
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -19,9 +18,9 @@ public class CreateCardSpecs extends BaseSpec {
         return new RequestSpecBuilder()
             .setBaseUri(baseURL)
             .setBasePath("/1/cards")
-            .addQueryParam("name", cardName)
+            .addQueryParam(cardsNameQueryParam, cardName)
             .addQueryParams(getAuthQueryParams())
-            .addQueryParam("idList", listId)
+            .addQueryParam(cardsListQueryParam, listId)
             .setBody("")
             .build();
     }
@@ -31,8 +30,8 @@ public class CreateCardSpecs extends BaseSpec {
             .expectStatusCode(HttpURLConnection.HTTP_OK)
             .expectContentType(ContentType.JSON)
             .expectHeader("Access-Control-Allow-Headers", equalTo("Authorization, Accept, Content-Type"))
-            .expectBody("name", equalTo(cardName))
-            .expectBody("idList", equalTo(listId))
+            .expectBody(cardsNameBodyPath, equalTo(cardName))
+            .expectBody(cardsListBodyPath, equalTo(listId))
             .build();
     }
 }

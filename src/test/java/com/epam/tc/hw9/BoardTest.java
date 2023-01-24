@@ -53,7 +53,7 @@ public class BoardTest extends BaseAPItest {
 
         given()
             .spec(getRequestUpdateBoardSuccess(updatedBoardName))
-            .pathParam(boardIdPathParamName, boardId)
+            .pathParam(boardIdUrlParamName, boardId)
             .when()
             .put()
             .then()
@@ -67,7 +67,7 @@ public class BoardTest extends BaseAPItest {
     public void getBoardTest() {
         given()
             .spec(getRequestGetBoardSuccess())
-            .pathParam(boardIdPathParamName, boardId)
+            .pathParam(boardIdUrlParamName, boardId)
             .when()
             .get()
             .then()
@@ -78,7 +78,7 @@ public class BoardTest extends BaseAPItest {
     public void getBoardTestErrors() {
         given()
             .spec(getRequestGetBoardIncorrectKey())
-            .pathParam(boardIdPathParamName, boardId)
+            .pathParam(boardIdUrlParamName, boardId)
             .when()
             .get()
             .then()
@@ -89,7 +89,7 @@ public class BoardTest extends BaseAPItest {
     public void getBoardTestErrorsPlainText(String key, String token, String boardId, int errorCode, String body) {
         given()
             .spec(getRequestGetBoardErrorsPlainText(key, token))
-            .pathParam(boardIdPathParamName, boardId)
+            .pathParam(boardIdUrlParamName, boardId)
             .when()
             .get()
             .then()
@@ -100,7 +100,7 @@ public class BoardTest extends BaseAPItest {
     public void deleteBoardTest() {
         given()
             .spec(getRequestDeleteBoardSuccess())
-            .pathParam(boardIdPathParamName, boardId)
+            .pathParam(boardIdUrlParamName, boardId)
             .when()
             .delete()
             .then()
@@ -108,7 +108,7 @@ public class BoardTest extends BaseAPItest {
 
         given()
             .spec(getRequestDeleteBoardSuccess())
-            .pathParam(boardIdPathParamName, boardId)
+            .pathParam(boardIdUrlParamName, boardId)
             .when()
             .delete()
             .then()
