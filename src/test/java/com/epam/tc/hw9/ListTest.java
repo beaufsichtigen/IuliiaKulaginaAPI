@@ -37,7 +37,7 @@ public class ListTest extends BaseAPItest {
 
     @Test
     public void getListTest() {
-        var getListResponse = given()
+        given()
             .spec(getRequestGetListSuccess())
             .pathParam(listIdUrlParamName, createdListId)
             .when()

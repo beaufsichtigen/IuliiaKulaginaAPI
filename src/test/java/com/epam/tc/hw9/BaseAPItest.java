@@ -36,7 +36,7 @@ public class BaseAPItest {
 
     @AfterClass
     public static void teardown() {
-        var deleteResponse = given()
+        given()
             .spec(getRequestDeleteBoardSuccess())
             .pathParam(boardIdUrlParamName, boardId)
             .when()
