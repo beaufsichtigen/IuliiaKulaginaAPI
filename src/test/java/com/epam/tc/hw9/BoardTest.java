@@ -1,21 +1,17 @@
 package com.epam.tc.hw9;
 
-import static com.epam.tc.hw9.specs.board.CreateBoardSpecs.getRequestCreateBoardSuccess;
-import static com.epam.tc.hw9.specs.board.CreateBoardSpecs.getResponseCreateBoardSuccess;
-import static com.epam.tc.hw9.specs.board.DeleteBoardSpecs.getRequestDeleteBoardSuccess;
-import static com.epam.tc.hw9.specs.board.DeleteBoardSpecs.getResponseDeleteBoardSuccess;
-import static com.epam.tc.hw9.specs.board.GetBoardSpecs.getRequestGetBoardErrorsPlainText;
-import static com.epam.tc.hw9.specs.board.GetBoardSpecs.getRequestGetBoardIncorrectKey;
-import static com.epam.tc.hw9.specs.board.GetBoardSpecs.getRequestGetBoardSuccess;
-import static com.epam.tc.hw9.specs.board.GetBoardSpecs.getResponseGetBoardErrorsPlainText;
-import static com.epam.tc.hw9.specs.board.GetBoardSpecs.getResponseGetBoardSuccess;
-import static com.epam.tc.hw9.specs.board.GetBoardSpecs.getResponseGetBoardUnauth;
-import static com.epam.tc.hw9.specs.board.UpdateBoardSpecs.getRequestUpdateBoardSuccess;
-import static com.epam.tc.hw9.specs.board.UpdateBoardSpecs.getResponseUpdateBoardSuccess;
+import static com.epam.tc.hw9.specs.BaseSpec.parameterBoardName;
 import static io.restassured.RestAssured.given;
+import static java.net.HttpURLConnection.HTTP_BAD_REQUEST;
+import static org.hamcrest.core.IsEqual.equalTo;
+import static org.hamcrest.core.IsNull.notNullValue;
+import static org.hamcrest.core.IsNull.nullValue;
 
 import com.epam.tc.hw9.data.Data;
 import com.epam.tc.hw9.entities.Board;
+import com.epam.tc.hw9.specs.Auth;
+import com.epam.tc.hw9.specs.board.GetBoardSpecs;
+import com.epam.tc.hw9.specs.board.UpdateBoardSpecs;
 import java.net.HttpURLConnection;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -23,25 +19,28 @@ import org.testng.annotations.Test;
 
 public class BoardTest extends BaseAPItest {
 
-    String boardName = "APIboard";
     String updatedBoardName = "Updated Name";
+    GetBoardSpecs getBoardSpec = new GetBoardSpecs();
+    UpdateBoardSpecs updateBoardSpecs = new UpdateBoardSpecs();
 
     @BeforeClass
-    public static void setup() {
+    public void setup() {
         System.out.println("setup empty");
     }
 
     @AfterClass
-    public static void teardown() {}
+    public void teardown() {}
 
     @Test(priority = 0)
     public void createBoardTest() {
         var createResponse = given()
-            .spec(getRequestCreateBoardSuccess(boardName))
+            .spec(createBoardSpec.getRequestCreateBoardSuccess())
+            .queryParam(parameterBoardName, boardName)
             .when()
             .post()
             .then()
-            .spec(getResponseCreateBoardSuccess(boardName))
+            .spec(createBoardSpec.getResponseSpecContentSuccessCheck())
+            .body(parameterBoardName, equalTo(boardName))
             .extract().body().as(Board.class);
 
         boardId = createResponse.id();
@@ -52,12 +51,13 @@ public class BoardTest extends BaseAPItest {
     public void updateBoardTest() {
 
         given()
-            .spec(getRequestUpdateBoardSuccess(updatedBoardName))
+            .spec(updateBoardSpecs.getRequestUpdateBoardSuccess(updatedBoardName))
             .pathParam(boardIdUrlParamName, boardId)
             .when()
             .put()
             .then()
-            .spec(getResponseUpdateBoardSuccess(updatedBoardName));
+            .spec(updateBoardSpecs.getResponseSpecContentSuccessCheck())
+            .body(parameterBoardName, equalTo(updatedBoardName));
     }
 
     //    Next test should fail, because body is plain text in current version,
@@ -66,48 +66,70 @@ public class BoardTest extends BaseAPItest {
     @Test(priority = 2)
     public void getBoardTest() {
         given()
-            .spec(getRequestGetBoardSuccess())
+            .spec(getBoardSpec.getRequestGetBoardSuccess())
             .pathParam(boardIdUrlParamName, boardId)
             .when()
             .get()
             .then()
-            .spec(getResponseGetBoardSuccess(updatedBoardName));
+            .spec(getBoardSpec.getResponseSpecContentSuccessCheck())
+            .body(parameterBoardName, equalTo(updatedBoardName));
     }
 
     @Test(priority = 2)
     public void getBoardTestErrors() {
         given()
-            .spec(getRequestGetBoardIncorrectKey())
+            .spec(getBoardSpec.getRequestGetBoardIncorrectKey())
             .pathParam(boardIdUrlParamName, boardId)
             .when()
             .get()
             .then()
-            .spec(getResponseGetBoardUnauth());
+            .spec(getBoardSpec.getResponseGetBoardUnauth())
+            .body("code", notNullValue())
+            .body("message", notNullValue());
     }
 
     @Test(priority = 2, dataProvider = "boardErrors", dataProviderClass = Data.class)
-    public void getBoardTestErrorsPlainText(String key, String token, String boardId, int errorCode, String body) {
+    public void getBoardTestAuthErrorsPlainText(String key, String token, int errorCode, String body) {
         given()
-            .spec(getRequestGetBoardErrorsPlainText(key, token))
+            .spec(getBoardSpec.getRequestGetBoardOnlyPath())
+            .queryParam(Auth.getApiKeyName(), key)
+            .queryParam(Auth.getApiTokenName(), token)
             .pathParam(boardIdUrlParamName, boardId)
             .when()
             .get()
             .then()
-            .spec(getResponseGetBoardErrorsPlainText(errorCode, body));
+            .spec(getBoardSpec.getResponseGetBoardErrorsPlainText())
+            .statusCode(errorCode)
+            .body(equalTo(body));
+    }
+
+    @Test(priority = 2)
+    public void getBoardTestNoBoardIdErrorPlainText() {
+        given()
+            .spec(getBoardSpec.getRequestGetBoardOnlyPath())
+            .params(Auth.getAuthQueryParams())
+            .pathParam(boardIdUrlParamName, "IncorrectBoardID")
+            .when()
+            .get()
+            .then()
+            .spec(getBoardSpec.getResponseGetBoardErrorsPlainText())
+            .statusCode(HTTP_BAD_REQUEST)
+            .body(equalTo("invalid id"));
     }
 
     @Test(priority = 3)
     public void deleteBoardTest() {
         given()
-            .spec(getRequestDeleteBoardSuccess())
+            .spec(deleteBoardSpec.getRequestDeleteBoardSuccess())
             .pathParam(boardIdUrlParamName, boardId)
             .when()
             .delete()
             .then()
-            .spec(getResponseDeleteBoardSuccess());
+            .spec(deleteBoardSpec.getResponseSpecContentSuccessCheck())
+            .body("_value", nullValue());
 
         given()
-            .spec(getRequestDeleteBoardSuccess())
+            .spec(deleteBoardSpec.getRequestDeleteBoardSuccess())
             .pathParam(boardIdUrlParamName, boardId)
             .when()
             .delete()

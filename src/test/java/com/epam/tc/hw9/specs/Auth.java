@@ -11,6 +11,8 @@ public class Auth {
     private static String apiTokenName = "token";
     private static String token = System.getenv("APItoken");
 
+    private static Map<String, String> authQueryParams = new HashMap<>();
+
     public static String getApiKeyName() {
         return apiKeyName;
     }
@@ -28,9 +30,11 @@ public class Auth {
     }
 
     public static Map<String, String> getAuthQueryParams() {
-        Map<String, String> authQueryParams = new HashMap<>();
-        authQueryParams.put(apiKeyName, key);
-        authQueryParams.put(apiTokenName, token);
+        if (authQueryParams.isEmpty()) {
+            authQueryParams.put(apiKeyName, key);
+            authQueryParams.put(apiTokenName, token);
+            System.out.println("Auth map ready");
+        }
         return authQueryParams;
     }
 }
