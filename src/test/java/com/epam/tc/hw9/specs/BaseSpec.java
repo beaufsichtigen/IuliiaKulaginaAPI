@@ -12,11 +12,9 @@ public class BaseSpec {
 
     public static String baseURL = "https://api.trello.com";
 
-    Auth auth = new Auth();
-
     protected RequestSpecBuilder baseRequstBuilder = new RequestSpecBuilder()
         .setBaseUri(baseURL)
-        .addQueryParams(auth.getAuthQueryParams());
+        .addQueryParams(Auth.getAuthQueryParams());
 
     protected RequestSpecBuilder onlyUriRequestBuilder = new RequestSpecBuilder()
         .setBaseUri(baseURL);
