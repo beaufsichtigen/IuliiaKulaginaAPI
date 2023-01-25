@@ -5,6 +5,7 @@ import static com.epam.tc.hw9.specs.Auth.getApiTokenName;
 import static com.epam.tc.hw9.specs.Auth.getToken;
 import static com.epam.tc.hw9.specs.BaseSpec.parameterBoardName;
 import static io.restassured.RestAssured.given;
+import static java.net.HttpURLConnection.HTTP_BAD_REQUEST;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.core.IsNull.notNullValue;
 import static org.hamcrest.core.IsNull.nullValue;
@@ -115,10 +116,10 @@ public class BoardTest extends BaseAPItest {
             .pathParam(boardIdUrlParamName, "IncorrectBoardID")
             .when()
             .get()
-            .then().log().all();
-//            .spec(getBoardSpec.getResponseGetBoardErrorsPlainText())
-//            .statusCode(HTTP_BAD_REQUEST)
-//            .body(equalTo("invalid id"));
+            .then()
+            .spec(getBoardSpec.getResponseGetBoardErrorsPlainText())
+            .statusCode(HTTP_BAD_REQUEST)
+            .body(equalTo("invalid id"));
     }
 
     @Test(priority = 3)
